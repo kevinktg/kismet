@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kismet Super-Aggregator Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'k-dark-blue': '#004AAD',
+                        'k-primary': '#3b82f6',
+                        'k-medium': '#60a5fa',
+                        'k-light': '#93c5fd',
+                        'k-text': '#e2e8f0',
+                        'k-text-light': '#94a3b8',
+                        'k-accent-light': '#1e293b',
+                        'k-accent-dark': '#f59e0b',
+                        'k-gold': '#fbbf24',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .phase-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .phase-card:hover {
+            transform: translateY(-2px);
+        }
+        .flow-step {
+            transition: all 0.2s ease;
+        }
+        .flow-step:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 font-sans text-k-text min-h-screen">
+
+    <div class="container mx-auto p-4 py-8 md:p-12 max-w-7xl">
+
+        <header class="mb-16 text-center">
+            <h1 class="text-5xl md:text-6xl font-light mb-6 tracking-tight">Kismet Super-Aggregator</h1>
+            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-k-accent-dark to-transparent mx-auto mb-6"></div>
+            <p class="text-lg md:text-xl text-k-text-light max-w-2xl mx-auto font-light">Starting with Trellit.ai voice → End-to-end automation</p>
+        </header>
+
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-light mb-3 tracking-tight">Four-Phase Automation</h2>
+                <p class="text-k-text-light max-w-2xl mx-auto font-light">
+                    Automating the customer lifecycle from initial contact to brand scaling
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-800/80 backdrop-blur-sm p-8 rounded-lg phase-card border border-slate-700/50">
+                    <div class="text-3xl font-light text-k-primary mb-4">01</div>
+                    <h3 class="text-xl font-semibold mb-3">Lead Generation</h3>
+                    <p class="text-sm text-k-text-light leading-relaxed">Capture leads from any channel and trigger automated follow-ups</p>
+                </div>
+                <div class="bg-slate-800/80 backdrop-blur-sm p-8 rounded-lg phase-card border border-slate-700/50">
+                    <div class="text-3xl font-light text-k-accent-dark mb-4">02</div>
+                    <h3 class="text-xl font-semibold mb-3">Qualification</h3>
+                    <p class="text-sm text-k-text-light leading-relaxed">Qualify leads, book sessions, manage nurture sequences</p>
+                </div>
+                <div class="bg-slate-800/80 backdrop-blur-sm p-8 rounded-lg phase-card border border-slate-700/50">
+                    <div class="text-3xl font-light text-k-medium mb-4">03</div>
+                    <h3 class="text-xl font-semibold mb-3">AI Pivot</h3>
+                    <p class="text-sm text-k-text-light leading-relaxed">Super-Aggregator model with T3 AI Agent handling admin work</p>
+                </div>
+                <div class="bg-slate-800/80 backdrop-blur-sm p-8 rounded-lg phase-card border border-slate-700/50">
+                    <div class="text-3xl font-light text-k-dark-blue mb-4">04</div>
+                    <h3 class="text-xl font-semibold mb-3">Brand Scaling</h3>
+                    <p class="text-sm text-k-text-light leading-relaxed">Transform minutes of content into weeks of marketing</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+                    <h2 class="text-2xl font-light mb-6 tracking-tight">Technology Stack</h2>
+                    <p class="text-k-text-light mb-8 leading-relaxed font-light">
+                        Built on Google Workspace Full Stack for security, scalability, and native AI integration
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">CRM/Database:</span> <span class="text-k-text-light">AppSheet + Google Sheets</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">Automation:</span> <span class="text-k-text-light">n8n (AI Agents + MCP)</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">Voice/SMS:</span> <span class="text-k-text-light">Trellit AI & Twilio</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">AI/ML:</span> <span class="text-k-text-light">Gemini API + Cloud NLP API</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">Core Apps:</span> <span class="text-k-text-light">Google Workspace (Calendar, Drive, Docs, Gmail)</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-k-primary mr-4 mt-1">—</span>
+                            <div><span class="font-medium">Content:</span> <span class="text-k-text-light">Canva Pro & Buffer</span></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+                    <h3 class="text-xl font-light mb-2 text-center tracking-tight">Monthly Cost</h3>
+                    <p class="text-sm text-k-text-light text-center mb-8">3 users • $103/month</p>
+                    <div class="chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+            <div class="mb-8">
+                <h2 class="text-2xl font-light mb-3 tracking-tight">Phase 1: Lead Generation</h2>
+                <p class="text-k-text-light max-w-2xl font-light leading-relaxed">
+                    Starts with Trellit.ai voice capture, then automated follow-up workflows
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                <div>
+                    <h3 class="text-lg font-medium mb-6 text-center">Lead Capture Flow</h3>
+                    <div class="flex flex-col space-y-3">
+                        <div class="bg-k-accent-dark/20 p-5 rounded-lg border-2 border-k-accent-dark flow-step text-center">
+                            <p class="font-bold text-base mb-2 text-k-accent-dark">🎤 Trellit.ai Voice</p>
+                            <p class="text-xs text-k-text-light">Incoming call captured & transcribed</p>
+                            <p class="text-xs text-k-text-light mt-1">Cloud NLP API processes audio</p>
+                        </div>
+                        <div class="flex justify-center py-2">
+                            <svg class="w-5 h-5 text-k-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-3">
+                            <div class="flex-1 bg-slate-700/50 p-4 rounded border-l-2 border-slate-500 flow-step">
+                                <p class="font-medium text-sm mb-1">Web Lead</p>
+                                <p class="text-xs text-k-text-light">Google Form / AppSheet</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-center py-2">
+                            <svg class="w-5 h-5 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-blue-900/30 p-4 rounded border border-k-primary/30 text-center flow-step">
+                            <p class="font-medium text-sm mb-1">Create Lead Record</p>
+                            <p class="text-xs text-k-text-light">AppSheet sets stage to "New Lead"</p>
+                        </div>
+                        <div class="flex justify-center py-2">
+                            <svg class="w-5 h-5 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-k-dark-blue text-white p-4 rounded text-center flow-step">
+                            <p class="font-medium text-sm mb-1">n8n Automation</p>
+                            <p class="text-xs text-blue-100">Triggers on new record</p>
+                        </div>
+                        <div class="flex justify-center py-2">
+                            <svg class="w-5 h-5 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="bg-slate-700/50 p-3 rounded border border-slate-600 flow-step">
+                                <p class="font-medium text-xs mb-1">SMS</p>
+                                <p class="text-xs text-k-text-light">Twilio</p>
+                            </div>
+                            <div class="bg-slate-700/50 p-3 rounded border border-slate-600 flow-step">
+                                <p class="font-medium text-xs mb-1">Task</p>
+                                <p class="text-xs text-k-text-light">AppSheet</p>
+                            </div>
+                            <div class="bg-slate-700/50 p-3 rounded border border-slate-600 flow-step">
+                                <p class="font-medium text-xs mb-1">Calendar</p>
+                                <p class="text-xs text-k-text-light">Google Calendar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-2 text-center">Pipeline Metrics</h3>
+                    <p class="text-xs text-k-text-light text-center mb-6">Average days per stage</p>
+                    <div class="chart-container h-96">
+                        <canvas id="pipeline1Chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20 bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+            <div class="mb-8">
+                <h2 class="text-2xl font-light mb-3 tracking-tight">Phase 2: Qualification</h2>
+                <p class="text-k-text-light max-w-2xl font-light leading-relaxed">
+                    Manage strategy sessions and route qualified leads to deals or nurture sequences
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                <div>
+                    <h3 class="text-lg font-medium mb-6 text-center">Decision Point</h3>
+                    <div class="flex flex-col space-y-3 items-center">
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-full text-center flow-step">
+                            <p class="font-medium text-sm mb-1">Strategy Session Complete</p>
+                            <p class="text-xs text-k-text-light">Status updated in AppSheet</p>
+                        </div>
+                        <div class="py-2">
+                            <svg class="w-5 h-5 text-k-text-light mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-blue-900/30 p-4 rounded border border-k-primary/30 text-center w-full flow-step">
+                            <p class="font-medium text-sm mb-1">AppSheet Prompt</p>
+                            <p class="text-xs text-k-text-light">Select next action</p>
+                        </div>
+                        <div class="flex justify-center items-center w-full py-2">
+                            <svg class="w-4 h-4 text-k-text-light rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <span class="mx-4 text-k-text-light">|</span>
+                            <svg class="w-4 h-4 text-k-text-light -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-3 w-full">
+                            <div class="flex-1 bg-emerald-900/30 p-4 rounded border-l-2 border-emerald-500 flow-step">
+                                <p class="font-medium text-sm mb-1">Create Deal</p>
+                                <p class="text-xs text-k-text-light">Triggers Phase 3</p>
+                            </div>
+                            <div class="flex-1 bg-amber-900/30 p-4 rounded border-l-2 border-amber-500 flow-step">
+                                <p class="font-medium text-sm mb-1">Nurture Sequence</p>
+                                <p class="text-xs text-k-text-light">30/60/90 day follow-up</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-2 text-center">T2 Smart Office</h3>
+                    <p class="text-xs text-k-text-light text-center mb-8">Knowledge bot for instant answers during calls</p>
+                    <div class="flex flex-col space-y-4 items-center">
+                         <div class="bg-slate-700/50 p-4 rounded-full w-40 text-center border border-slate-600">
+                            <p class="font-medium text-sm">Salesperson</p>
+                        </div>
+                        <div class="text-k-text-light text-sm">↕</div>
+                        <div class="bg-k-dark-blue text-white p-5 rounded text-center w-56 flow-step">
+                            <p class="font-medium text-sm mb-1">T2 Knowledge Bot</p>
+                            <p class="text-xs text-blue-100">n8n + Gemini API</p>
+                        </div>
+                        <div class="text-k-text-light text-sm">↕</div>
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-64 text-center flow-step">
+                            <p class="font-medium text-sm mb-1">Knowledge Base</p>
+                            <p class="text-xs text-k-text-light">Google Docs / AppSheet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+            <div class="mb-8">
+                <h2 class="text-2xl font-light mb-3 tracking-tight">Phase 3: Super-Aggregator</h2>
+                <p class="text-k-text-light max-w-2xl font-light leading-relaxed">
+                    Single-click referral triggers T3 AI Agent to handle all administrative work, transforming leads into application-ready clients
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                <div>
+                    <h3 class="text-lg font-medium mb-2 text-center">Deal Pipeline</h3>
+                    <p class="text-xs text-k-text-light text-center mb-6">Average days per stage</p>
+                    <div class="chart-container h-96">
+                        <canvas id="pipeline3Chart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-6 text-center">T3 Agent Workflow</h3>
+                    <div class="flex flex-col space-y-3 items-center">
+                        <div class="bg-k-primary text-white p-4 rounded text-center w-full flow-step">
+                            <p class="font-medium text-sm mb-1">Refer Button Clicked</p>
+                            <p class="text-xs text-blue-100">AppSheet action</p>
+                        </div>
+                        <div class="py-2">
+                            <svg class="w-5 h-5 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-k-dark-blue text-white p-4 rounded text-center w-full flow-step">
+                            <p class="font-medium text-sm">T3 Multi-Tool Agent</p>
+                            <p class="text-xs text-blue-100">n8n activation</p>
+                        </div>
+                        <div class="py-2">
+                            <svg class="w-5 h-5 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-full flow-step">
+                            <p class="font-medium text-sm mb-1">Document Chasing</p>
+                            <p class="text-xs text-k-text-light">Automated checklist & follow-ups</p>
+                        </div>
+                        <div class="py-1">
+                            <svg class="w-4 h-4 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-full flow-step">
+                            <p class="font-medium text-sm mb-1">ASIC Compliance</p>
+                            <p class="text-xs text-k-text-light">Log in Google Sheets</p>
+                        </div>
+                        <div class="py-1">
+                            <svg class="w-4 h-4 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-full flow-step">
+                            <p class="font-medium text-sm mb-1">File Handover</p>
+                            <p class="text-xs text-k-text-light">Package from Google Drive & send</p>
+                        </div>
+                        <div class="py-1">
+                            <svg class="w-4 h-4 text-k-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-slate-700/50 p-4 rounded border-l-2 border-k-accent-dark w-full flow-step">
+                            <p class="font-medium text-sm mb-1">Pipeline Update</p>
+                            <p class="text-xs text-k-text-light">Deal stage & financial tracking</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 bg-slate-800/80 backdrop-blur-sm p-10 rounded-lg border border-slate-700/50">
+            <div class="mb-8">
+                <h2 class="text-2xl font-light mb-3 tracking-tight">Phase 4: Brand Scaling</h2>
+                <p class="text-k-text-light max-w-2xl font-light leading-relaxed">
+                    T4 "Nano Banana" maintains the relationship at scale. Transform 5-minute recordings into weeks of personalized content.
+                </p>
+            </div>
+            <h3 class="text-lg font-medium text-center mb-8">Content Workflow</h3>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 overflow-x-auto p-4">
+                
+                <div class="flex-shrink-0 bg-slate-700/50 p-5 rounded border-l-2 border-k-accent-dark text-center w-48 flow-step">
+                    <p class="font-medium text-sm mb-1">5-Min Video</p>
+                    <p class="text-xs text-k-text-light">From Salesman</p>
+                </div>
+                
+                <svg class="w-5 h-5 text-k-text-light hidden md:block flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                <svg class="w-5 h-5 text-k-text-light md:hidden flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+                
+                <div class="flex-shrink-0 bg-k-dark-blue text-white p-5 rounded text-center w-48 flow-step">
+                    <p class="font-medium text-sm mb-1">n8n Workflow</p>
+                    <p class="text-xs text-blue-100">Cloud NLP transcription</p>
+                </div>
+
+                <svg class="w-5 h-5 text-k-text-light hidden md:block flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                <svg class="w-5 h-5 text-k-text-light md:hidden flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+
+                <div class="flex-shrink-0 bg-slate-700/50 p-5 rounded border-l-2 border-k-accent-dark text-center w-48 flow-step">
+                    <p class="font-medium text-sm mb-1">Gemini API</p>
+                    <p class="text-xs text-k-text-light">20+ variations</p>
+                </div>
+
+                <svg class="w-5 h-5 text-k-text-light hidden md:block flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                <svg class="w-5 h-5 text-k-text-light md:hidden flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+
+                <div class="flex-shrink-0 bg-slate-700/50 p-5 rounded border-l-2 border-k-accent-dark text-center w-48 flow-step">
+                    <p class="font-medium text-sm mb-1">Canva Pro</p>
+                    <p class="text-xs text-k-text-light">Social kits & ads</p>
+                </div>
+
+                <svg class="w-5 h-5 text-k-text-light hidden md:block flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                <svg class="w-5 h-5 text-k-text-light md:hidden flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+
+                <div class="flex-shrink-0 bg-slate-700/50 p-5 rounded border-l-2 border-k-accent-dark text-center w-48 flow-step">
+                    <p class="font-medium text-sm mb-1">Buffer</p>
+                    <p class="text-xs text-k-text-light">Schedule distribution</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 pt-12 pb-16">
+            <h2 class="text-2xl font-light mb-4 tracking-tight">End-to-End Automation</h2>
+            <p class="text-k-text-light max-w-2xl mx-auto font-light leading-relaxed mb-6">
+                Efficiency, compliance, and scalable relationship-driven operations
+            </p>
+            <a href="https://kismetfinancegroup.com.au" target="_blank" rel="noopener" class="text-k-primary hover:text-k-accent-dark transition-colors text-sm font-medium">
+                kismetfinancegroup.com.au
+            </a>
+        </footer>
+
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+
+            const tooltipTitleCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const chartColors = {
+                darkBlue: '#3b82f6',
+                primary: '#60a5fa',
+                medium: '#93c5fd',
+                light: '#bfdbfe',
+                slate: '#94a3b8',
+                lightSlate: '#cbd5e1'
+            };
+
+            const costCtx = document.getElementById('costChart');
+            if (costCtx) {
+                new Chart(costCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            'Google Workspace', 
+                            'AppSheet CRM', 
+                            'Cloud NLP API', 
+                            'Canva Pro', 
+                            'Buffer', 
+                            'Twilio SMS'
+                        ],
+                        datasets: [{
+                            label: 'Monthly Cost',
+                            data: [29.70, 30.00, 10.00, 15.00, 15.00, 3.00],
+                            backgroundColor: [
+                                chartColors.darkBlue, 
+                                chartColors.primary, 
+                                chartColors.medium, 
+                                chartColors.slate, 
+                                chartColors.lightSlate,
+                                chartColors.light
+                            ],
+                            borderColor: '#1e293b',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            ...tooltipTitleCallback.plugins,
+                            legend: {
+                                labels: {
+                                    color: '#e2e8f0'
+                                }
+                            }
+                        },
+                        ...tooltipTitleCallback
+                    }
+                });
+            }
+
+            const pipeline1Ctx = document.getElementById('pipeline1Chart');
+            if (pipeline1Ctx) {
+                const wrappedLabels1 = ['New Lead', 'Uncontracted', 'Contracted', ['Waiting', 'to book'], 'First Consult'];
+                new Chart(pipeline1Ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: wrappedLabels1,
+                        datasets: [{
+                            label: 'Avg. Days in Stage',
+                            data: [1, 3, 5, 4, 1],
+                            backgroundColor: [
+                                chartColors.light,
+                                chartColors.medium,
+                                chartColors.primary,
+                                chartColors.darkBlue,
+                                chartColors.slate
+                            ],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#94a3b8'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#94a3b8'
+                                }
+                            }
+                        },
+                        plugins: {
+                            ...tooltipTitleCallback.plugins,
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const pipeline3Ctx = document.getElementById('pipeline3Chart');
+            if (pipeline3Ctx) {
+                const wrappedLabels3 = ['Deal Identified', ['Proceeding –', 'In Progress'], ['Awaiting Contracts', '/ Approvals'], ['Settled /', 'Completed']];
+                new Chart(pipeline3Ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: wrappedLabels3,
+                        datasets: [{
+                            label: 'Avg. Days in Stage',
+                            data: [2, 10, 7, 3],
+                            backgroundColor: [
+                                chartColors.light,
+                                chartColors.medium,
+                                chartColors.primary,
+                                chartColors.darkBlue
+                            ],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#94a3b8'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#94a3b8'
+                                }
+                            }
+                        },
+                        plugins: {
+                            ...tooltipTitleCallback.plugins,
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
